@@ -8,7 +8,7 @@ import Rank from './components/Rank/Rank.js';
 import './App.css';
 
 const app = new Clarifai.App({
-  apiKey:'My key' // enter your API key here
+  apiKey:'4bb3a25f2ea84d16a3bb1756fc5dbf39' // enter your API key here
 }) ;
 
 class App extends Component {
