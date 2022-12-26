@@ -6,7 +6,8 @@ const Rank = ({ name, entires }) => {
     return (
         <div>
             <div className="white f3">
-                {`${name}, your current entry count is...`}
+                {/* {`${name}, your current entry count is...`} */}
+                {`your current entry count is...`}
             </div>
             <div className="white f1">
                 {entires}
