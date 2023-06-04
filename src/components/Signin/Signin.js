@@ -1,8 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-<Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-
 class Signin extends React.Component {
     constructor(props) {
         super(props);
