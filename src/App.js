@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Navigation from './components/navigation/navigation.js';
 import Logo from './components/Logo/logo';
-import Clarifai from 'clarifai';
+// import Clarifai from 'clarifai';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
 import Rank from './components/Rank/Rank.js';
@@ -9,9 +9,48 @@ import './App.css';
 import Signin from './components/Signin/Signin.js';
 import Register from './components/Register/Register.js';
 
-const app = new Clarifai.App({
-  apiKey:'4bb3a25f2ea84d16a3bb1756fc5dbf39' // enter your API key here
-}) ;
+// const app = new Clarifai.App({
+//   apiKey:'4bb3a25f2ea84d16a3bb1756fc5dbf39' // enter your API key here
+// }) ;
+
+const returnClarifaiRequest = (imageUrl) => {
+    // Your PAT (Personal Access Token) can be found in the portal under Authentification
+    const PAT = '2ea1e3178ac14268ab18667a98d57b87';
+    // Specify the correct user_id/app_id pairings
+    // Since you're making inferences outside your app's scope
+    const USER_ID = 'mo-min14';       
+    const APP_ID = 'face_detect_app';
+    // Change these to whatever model and image URL you want to use
+    const MODEL_ID = 'face-detection';  
+    const IMAGE_URL = imageUrl;
+
+    const raw = JSON.stringify({
+      "user_app_id": {
+          "user_id": USER_ID,
+          "app_id": APP_ID
+      },
+      "inputs": [
+          {
+              "data": {
+                  "image": {
+                      "url": IMAGE_URL
+                  }
+              }
+          }
+      ]
+    });
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Key ' + PAT
+      },
+      body: raw
+    };
+
+    return requestOptions
+
+}
 
 class App extends Component {
   constructor() {
@@ -66,26 +105,28 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input})
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-    .then((response)=>{
-      if (response) {
-        fetch('http://localhost:3000/imageurl', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-              id: this.state.user.id
-            })
-        })
+    // app.models.predict('face-detection', this.state.input)
+    fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiRequest(this.state.input))
         .then(response => response.json())
-        .then(count => {
-          this.setState(Object.assign(this.state.user, { entries: count }))
-        })
-      }
-        this.displayFaceBox(this.calculateFaceLocation(response));
-      }) 
-      .catch((err) => {
-        console.log(err);
-      });    
+        .then((response)=>{
+          if (response) {
+            fetch('http://localhost:3000/imageurl', {
+              method: 'put',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                  id: this.state.user.id
+                })
+            })
+            .then(response => response.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, { entries: count }))
+            })
+          }
+            this.displayFaceBox(this.calculateFaceLocation(response));
+          }) 
+          .catch((err) => {
+            console.log(err);
+          });    
     
 
   }
