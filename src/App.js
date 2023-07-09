@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Navigation from './components/navigation/navigation.js';
 import Logo from './components/Logo/logo';
+import ParticlesBg from 'particles-bg'
 // import Clarifai from 'clarifai';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
@@ -110,17 +111,17 @@ class App extends Component {
         .then(response => response.json())
         .then((response)=>{
           if (response) {
-            fetch('http://localhost:3000/imageurl', {
+            fetch('http://localhost:3000/image', {
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
                   id: this.state.user.id
                 })
             })
-            .then(response => response.json())
-            .then(count => {
-              this.setState(Object.assign(this.state.user, { entries: count }))
-            })
+              .then(response => response.json())
+              .then(count => {
+                this.setState(Object.assign(this.state.user, { entries: count }))
+              })
           }
             this.displayFaceBox(this.calculateFaceLocation(response));
           }) 
@@ -144,6 +145,7 @@ class App extends Component {
     const { imageUrl, box, isSignedIn, route } = this.state;
     return (
       <div className="App">
+        <ParticlesBg type="cobweb" bg={true} />
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
         { route === 'home' 
           ? <div>
