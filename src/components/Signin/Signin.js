@@ -30,9 +30,10 @@ class Signin extends React.Component {
                 if (user.id) {
                     this.props.loadUser(user);
                     this.props.onRouteChange('home')
-                } else {
-                    alert('Incorrect email or password. Please try again.');
-                }
+                } 
+                // else {
+                //     alert('Incorrect email or password. Please try again.');
+                // }
             })
     }
     render() {
