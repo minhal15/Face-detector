@@ -16,7 +16,7 @@ class Register extends React.Component {
     onEmailChange = (event) => {
         this.setState({email: event.target.value})
     }
-    onPasswordChange = (event) => {
+    onPasswordChange = (event) => { 
         this.setState({password: event.target.value})
     }
 
@@ -32,7 +32,7 @@ class Register extends React.Component {
         })
             .then(response => response.json())
             .then(user => {
-                if (user) {
+                if (user.id) {
                     this.props.loadUser(user);
                     this.props.onRouteChange('home');
                 }
