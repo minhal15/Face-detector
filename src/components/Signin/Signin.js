@@ -17,23 +17,24 @@ class Signin extends React.Component {
         this.setState({signInPassword: event.target.value})
     }
     onSubmitSignIn = () => {
-        fetch('https://face-detection-api-bjp0.onrender.com/signin', {
+        fetch('https://evening-lowlands-29784-9fa1fc8413cc.herokuapp.com/signin', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 email: this.state.signInEmail,
                 password: this.state.signInPassword
             })
+            
         })
-            .then(response => response.json())
+            .then(response => {
+                console.log(response); // Log the response
+                response.json();
+            })
             .then(user => {
                 if (user.id) {
                     this.props.loadUser(user);
                     this.props.onRouteChange('home')
                 } 
-                // else {
-                //     alert('Incorrect email or password. Please try again.');
-                // }
             })
     }
     render() {

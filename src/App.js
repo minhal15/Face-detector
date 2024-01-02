@@ -113,7 +113,7 @@ class App extends Component {
         .then(response => response.json())
         .then((response)=>{
           if (response) {
-            fetch('https://face-detection-api-bjp0.onrender.com/image', {
+            fetch('https://evening-lowlands-29784-9fa1fc8413cc.herokuapp.com/image', {
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
